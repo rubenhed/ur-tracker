@@ -38,16 +38,11 @@ app.add_middleware(
 print("[BOOT] DB engine created")
 
 @app.post("/scrape/run")
-def trigger_scrape(background_tasks: BackgroundTasks):
-    def job():
-        try:
-            run()
-            print("[api] scrape run success")
-        except Exception as e:
-            print(f"[api] scrape run failed: {e}")
-
-    background_tasks.add_task(job)
-    return {"status": "started"}
+def trigger_scrape():
+    print("[api] endpoint hit")
+    run()
+    print("[api] run finished")
+    return {"status": "done"}
 
 def scrape() -> list[dict]:
     print(f"[scraper] Loading {URL} ...")
