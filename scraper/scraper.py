@@ -8,6 +8,8 @@ from playwright.sync_api import sync_playwright
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
+from fastapi import FastAPI, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
@@ -20,10 +22,32 @@ URL = "https://www.ur-net.go.jp/chintai/kanto/tokyo/area/"
 PREFECTURE_NAME = "東京都"
 INTERVAL_SECONDS = 120
 
-engine = create_engine(os.environ["DATABASE_URL"])
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+engine = create_engine(DATABASE_URL)
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 print("[BOOT] DB engine created")
 
+@app.post("/scrape/run")
+def trigger_scrape(background_tasks: BackgroundTasks):
+    def job():
+        try:
+            run()
+            print("[api] scrape run success")
+        except Exception as e:
+            print(f"[api] scrape run failed: {e}")
+
+    background_tasks.add_task(job)
+    return {"status": "started"}
 
 def scrape() -> list[dict]:
     print(f"[scraper] Loading {URL} ...")
@@ -107,6 +131,4 @@ def run_loop():
         print(f"[scraper] Waiting {INTERVAL_SECONDS}s...")
         time.sleep(INTERVAL_SECONDS)
 
-
-if __name__ == "__main__":
-    run_loop()
+run_loop()
