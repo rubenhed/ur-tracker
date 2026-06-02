@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup
@@ -10,7 +9,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from db.models import Area, Prefecture, Snapshot
 
 URL = "https://www.ur-net.go.jp/chintai/kanto/tokyo/area/"

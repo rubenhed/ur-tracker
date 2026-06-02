@@ -6,8 +6,6 @@ from sqlalchemy.orm import Session
 
 load_dotenv()
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-
 from models import Base, Region, Prefecture
 
 DATABASE_URL = os.environ["DATABASE_URL"]
