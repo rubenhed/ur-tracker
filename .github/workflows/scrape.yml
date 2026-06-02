@@ -2,7 +2,7 @@ name: UR Scraper
 
 on:
   schedule:
-    - cron: "*/10 * * * *" # Recommending 15 mins for better cron reliability, but change back to "*/5 * * * *" if you want to try it!
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -17,16 +17,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip" # Built-in caching for your python dependencies
+          cache: "pip"
 
       - name: Install dependencies
         run: pip install -r scraper/requirements.txt
 
-      # 1. Set an env variable so Playwright installs the browser inside the workspace
       - name: Set Playwright Path
         run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright" >> $GITHUB_ENV
 
-      # 2. Check for an existing cache of the browser binaries
       - name: Cache Playwright Browsers
         id: playwright-cache
         uses: actions/cache@v4
@@ -34,9 +32,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('scraper/requirements.txt') }}
 
-      # 3. Only install Chromium if a cached version WAS NOT found
+      # Fixed the colon to a dot here:
       - name: Install Playwright Chromium
-        if: steps:playwright-cache.outputs.cache-hit != 'true'
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: playwright install chromium
 
       - name: Run scraper
