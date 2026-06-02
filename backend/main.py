@@ -10,7 +10,7 @@ load_dotenv()
 from db.models import Region, Prefecture, Area
 
 DATABASE_URL = os.environ["DATABASE_URL"]
-FRONTEND_URL = os.environ["FRONTEND_URL"]
+# FRONTEND_URL = os.environ["FRONTEND_URL"]
 
 engine = create_engine(DATABASE_URL)
 
