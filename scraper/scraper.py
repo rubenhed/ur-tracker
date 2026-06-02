@@ -131,4 +131,4 @@ def run_loop():
         print(f"[scraper] Waiting {INTERVAL_SECONDS}s...")
         time.sleep(INTERVAL_SECONDS)
 
-run_loop()
+# run_loop()
