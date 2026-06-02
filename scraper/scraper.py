@@ -1,3 +1,5 @@
+print("[BOOT] scraper file started")
+
 import os
 import time
 from datetime import datetime, timezone
@@ -9,13 +11,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print("[BOOT] dotenv loaded")
+
 from db.models import Area, Prefecture, Snapshot
+print("[BOOT] db.models imported")
 
 URL = "https://www.ur-net.go.jp/chintai/kanto/tokyo/area/"
 PREFECTURE_NAME = "東京都"
 INTERVAL_SECONDS = 120
 
 engine = create_engine(os.environ["DATABASE_URL"])
+
+print("[BOOT] DB engine created")
 
 
 def scrape() -> list[dict]:
