@@ -1,8 +1,13 @@
 name: UR Scraper
 
 on:
+  push:
+    branches:
+      - master
+
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/15 * * * *"
+
   workflow_dispatch:
 
 jobs:
