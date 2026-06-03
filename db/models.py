@@ -35,6 +35,7 @@ class Area(Base):
 
     prefecture = relationship("Prefecture", back_populates="areas")
     snapshots = relationship("Snapshot", back_populates="area")
+    subscriptions = relationship("Subscription", back_populates="area")
 
 
 class Snapshot(Base):
@@ -46,3 +47,13 @@ class Snapshot(Base):
     recorded_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     area = relationship("Area", back_populates="snapshots")
+
+class Subscription(Base):
+    __tablename__ = "subscriptions"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, nullable=False)
+    area_id = Column(Integer, ForeignKey("areas.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+
+    area = relationship("Area", back_populates="subscriptions")
