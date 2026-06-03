@@ -10,7 +10,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, selectinload
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
@@ -22,21 +21,14 @@ print("[BOOT] db.models imported")
 URL = "https://www.ur-net.go.jp/chintai/kanto/tokyo/area/"
 PREFECTURE_NAME = "東京都"
 INTERVAL_SECONDS = 120
-FRONTEND_URL = os.environ["FRONTEND_URL"]
 
+BACKEND_URL = os.environ["BACKEND_URL"]
 DATABASE_URL = os.environ["DATABASE_URL"]
 resend.api_key = os.environ["RESEND_API_KEY"]
 
 engine = create_engine(DATABASE_URL)
 
 app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 print("[BOOT] DB engine created")
 
@@ -114,7 +106,7 @@ def notify_subscribers(session: Session, changes: list[dict]):
                 <tbody>{rows}</tbody>
             </table>
             <p style="margin-top:24px;font-size:12px;color:#94a3b8">
-                <a href="{FRONTEND_URL}/unsubscribe/{email}" style="color:#94a3b8">Unsubscribe</a>
+                <a href="{BACKEND_URL}/unsubscribe/{email}" style="color:#94a3b8">Unsubscribe</a>
             </p>
         </div>
         """

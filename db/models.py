@@ -9,7 +9,7 @@ class Region(Base):
     __tablename__ = "regions"
 
     id = Column(Integer, primary_key=True)
-    name_ja = Column(String, nullable=False, unique=True)
+    name_ja = Column(String, nullable=False)
 
     prefectures = relationship("Prefecture", back_populates="region")
 
@@ -19,7 +19,8 @@ class Prefecture(Base):
 
     id = Column(Integer, primary_key=True)
     region_id = Column(Integer, ForeignKey("regions.id"), nullable=False)
-    name_ja = Column(String, nullable=False, unique=True)
+    name_ja = Column(String, nullable=False)
+    tdfk = Column(String, nullable=True)
     last_checked_at = Column(DateTime(timezone=True), nullable=True)
 
     region = relationship("Region", back_populates="prefectures")
@@ -31,7 +32,8 @@ class Area(Base):
 
     id = Column(Integer, primary_key=True)
     prefecture_id = Column(Integer, ForeignKey("prefectures.id"), nullable=False)
-    name_ja = Column(String, nullable=False, unique=True)
+    name_ja = Column(String, nullable=False)
+    skcs_id = Column(String, nullable=True)
 
     prefecture = relationship("Prefecture", back_populates="areas")
     snapshots = relationship("Snapshot", back_populates="area")
@@ -47,6 +49,7 @@ class Snapshot(Base):
     recorded_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     area = relationship("Area", back_populates="snapshots")
+
 
 class Subscription(Base):
     __tablename__ = "subscriptions"
