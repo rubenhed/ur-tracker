@@ -135,7 +135,7 @@ def save_to_db(results: list[dict]):
             print(f"[scraper] Prefecture {PREFECTURE_NAME} not found — did you run seed.py?")
             return
 
-        changes = []
+        increases = []
         updated = 0
         for result in results:
             area = session.query(Area).filter_by(name_ja=result["name"]).first()
@@ -154,8 +154,8 @@ def save_to_db(results: list[dict]):
 
             if latest is None or latest.vacant_rooms != result["vacant_rooms"]:
                 # Skip notifying on first ever snapshot
-                if latest is not None:
-                    changes.append({
+                if latest is not None and result["vacant_rooms"] > latest.vacant_rooms:
+                    increases.append({
                         "area_id": area.id,
                         "area_name": result["name"],
                         "old": latest.vacant_rooms,
@@ -174,7 +174,7 @@ def save_to_db(results: list[dict]):
         session.commit()
         print(f"[scraper] {updated} areas updated, {len(results) - updated} unchanged")
 
-        notify_subscribers(session, changes)
+        notify_subscribers(session, increases)
 
 
 def run():
