@@ -73,7 +73,7 @@ def subscribe(body: SubscribeRequest):
 
         return {"subscribed_areas": all_names}
 
-@app.get("/subscriptions/{email}")
+@app.get("/unsubscribe/{email}")
 def unsubscribe(email: str):
     with Session(engine) as session:
         session.query(Subscription).filter_by(email=email).delete()
