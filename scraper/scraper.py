@@ -105,6 +105,9 @@ def notify_subscribers(session: Session, changes: list[dict]):
                 </thead>
                 <tbody>{rows}</tbody>
             </table>
+            <p style="margin-top:20px">
+                <a href="https://www.ur-net.go.jp/chintai/kanto/tokyo/area/" style="display:inline-block;padding:10px 16px;background:#2563eb;color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px">View listings on UR</a>
+            </p>
             <p style="margin-top:24px;font-size:12px;color:#94a3b8">
                 <a href="{BACKEND_URL}/unsubscribe/{email}" style="color:#94a3b8">Unsubscribe</a>
             </p>
